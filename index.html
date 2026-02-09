@@ -2,7 +2,7 @@
 <html lang="da">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Musikquiz - Gæt Årstallet</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Krona+One&family=DM+Sans:wght@400;500;700&display=swap');
@@ -48,82 +48,30 @@
             50% { opacity: 0.6; transform: scale(1.1); }
         }
         
-        .desktop-view {
-            padding: 2rem;
-        }
+        .desktop-view { padding: 2rem; display: block; }
+        .container { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
         
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 3rem;
-            animation: fadeInDown 0.8s ease-out;
-        }
-        
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
+        header { text-align: center; margin-bottom: 3rem; }
         h1 {
             font-family: 'Krona One', sans-serif;
             font-size: clamp(2rem, 5vw, 3.5rem);
-            margin-bottom: 0.5rem;
             background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            letter-spacing: -0.02em;
         }
-        
-        .subtitle {
-            font-size: 1.1rem;
-            color: var(--gray);
-            font-weight: 500;
-        }
-        
-        .main-content {
-            animation: fadeIn 1s ease-out 0.3s both;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
+
         .card {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 24px;
             padding: 2.5rem;
             backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
             margin-bottom: 2rem;
+            text-align: center;
         }
         
-        .card:hover {
-            border-color: rgba(29, 185, 84, 0.3);
-            box-shadow: 0 20px 40px rgba(29, 185, 84, 0.1);
-        }
-        
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
+        .controls { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
         
         button {
             padding: 1.25rem 2.5rem;
@@ -131,180 +79,29 @@
             border: none;
             border-radius: 12px;
             color: var(--dark);
-            font-family: 'DM Sans', sans-serif;
             font-weight: 700;
-            font-size: 1.1rem;
+            text-transform: uppercase;
             cursor: pointer;
             transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
         }
         
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(29, 185, 84, 0.4);
-        }
-        
-        button:active {
-            transform: translateY(0);
-        }
-        
-        button.secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--light);
-        }
-        
-        button.secondary:hover {
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
-        }
-        
-        .qr-display {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2rem;
-        }
+        button.secondary { background: rgba(255, 255, 255, 0.1); color: var(--light); }
         
         #qrcode {
             background: white;
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-            transition: all 0.5s ease;
-            min-height: 340px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: inline-block;
+            margin-top: 20px;
         }
-        
-        #qrcode.show {
-            animation: zoomIn 0.5s ease-out;
-        }
-        
-        @keyframes zoomIn {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        
-        .selected-track {
-            text-align: center;
-            padding: 2rem;
-            background: rgba(29, 185, 84, 0.1);
-            border: 2px solid var(--primary);
-            border-radius: 20px;
-            width: 100%;
-            max-width: 500px;
-            transition: all 0.5s ease;
-        }
-        
-        .selected-track.show {
-            animation: slideUp 0.5s ease-out;
-        }
-        
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .selected-track h3 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-            font-family: 'Krona One', sans-serif;
-        }
-        
-        .selected-track .artist {
-            color: var(--gray);
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-        }
-        
-        .selected-track .year-badge {
+
+        .year-badge {
             display: inline-block;
             background: var(--accent);
-            color: var(--light);
             padding: 0.5rem 1.5rem;
             border-radius: 25px;
-            font-size: 1.1rem;
-            font-weight: 700;
-        }
-        
-        .info-box {
-            background: rgba(255, 150, 0, 0.1);
-            border: 1px solid rgba(255, 150, 0, 0.3);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            font-size: 0.95rem;
-            line-height: 1.7;
-        }
-        
-        .info-box strong {
-            color: #ffa500;
-            display: block;
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-        
-        .info-box ul {
-            margin-top: 0.5rem;
-            padding-left: 1.5rem;
-        }
-        
-        .info-box li {
-            margin-bottom: 0.3rem;
-        }
-        
-        .placeholder {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--gray);
-        }
-        
-        .placeholder h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            font-family: 'Krona One', sans-serif;
-        }
-        
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-        }
-        
-        .stat-item {
-            text-align: center;
-            padding: 1rem 1.5rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-        }
-        
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary);
-            font-family: 'Krona One', sans-serif;
-        }
-        
-        .stat-label {
-            color: var(--gray);
-            font-size: 0.9rem;
-            margin-top: 0.25rem;
+            font-weight: bold;
+            margin-top: 15px;
         }
 
         /* Mobile Player View */
@@ -314,342 +111,172 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            padding: 2rem;
+            padding: 1.5rem;
             text-align: center;
         }
 
-        .mobile-player.active {
-            display: flex;
-        }
+        .mobile-player.active { display: flex; }
 
         .player-card {
             background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(29, 185, 84, 0.3);
+            border: 2px solid var(--primary);
             border-radius: 24px;
-            padding: 3rem 2rem;
-            backdrop-filter: blur(20px);
-            max-width: 500px;
-            width: 100%;
-            animation: fadeIn 1s ease-out;
-        }
-
-        .equalizer {
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            gap: 8px;
-            height: 120px;
-            margin-bottom: 2rem;
-        }
-
-        .bar {
-            width: 12px;
-            background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
-            border-radius: 6px;
-            animation: bounce-bar 0.8s ease-in-out infinite;
-        }
-
-        .bar:nth-child(1) { animation-delay: 0s; }
-        .bar:nth-child(2) { animation-delay: 0.1s; }
-        .bar:nth-child(3) { animation-delay: 0.2s; }
-        .bar:nth-child(4) { animation-delay: 0.3s; }
-        .bar:nth-child(5) { animation-delay: 0.4s; }
-        .bar:nth-child(6) { animation-delay: 0.3s; }
-        .bar:nth-child(7) { animation-delay: 0.2s; }
-
-        @keyframes bounce-bar {
-            0%, 100% { height: 20%; }
-            50% { height: 100%; }
-        }
-
-        .player-title {
-            font-family: 'Krona One', sans-serif;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            line-height: 1.2;
-        }
-
-        .player-message {
-            font-size: 1.3rem;
-            color: var(--light);
-            margin-bottom: 2rem;
-            font-weight: 500;
-        }
-
-        .player-instructions {
-            font-size: 1rem;
-            color: var(--gray);
-            line-height: 1.6;
-            margin-bottom: 2rem;
-        }
-
-        .guess-prompt {
-            background: rgba(255, 0, 110, 0.1);
-            border: 2px solid var(--accent);
-            border-radius: 16px;
             padding: 2rem;
-            margin-top: 2rem;
+            width: 100%;
+            max-width: 400px;
         }
 
-        .guess-prompt h3 {
-            font-family: 'Krona One', sans-serif;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--accent);
-        }
-
-        .guess-prompt p {
-            font-size: 1.1rem;
-            line-height: 1.6;
+        .spotify-container {
+            margin: 2rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            min-height: 152px;
         }
 
         @media (max-width: 768px) {
-            .controls {
-                flex-direction: column;
-            }
-            
-            button {
-                width: 100%;
-            }
+            .controls { flex-direction: column; }
+            button { width: 100%; }
         }
     </style>
 </head>
 <body>
-    <!-- Desktop View -->
+
     <div class="desktop-view" id="desktopView">
         <div class="container">
             <header>
                 <h1>🎵 Musikquiz</h1>
-                <p class="subtitle">Gæt årstallet på sangen</p>
+                <p style="color: var(--gray);">Gæt årstallet på sangen</p>
             </header>
             
-            <div class="main-content">
-                <div class="controls">
-                    <button id="randomBtn" onclick="selectRandomSong()">🎲 Vælg tilfældig sang</button>
-                    <button class="secondary" id="revealBtn" onclick="revealAnswer()" style="display: none;">👁️ Vis svar</button>
+            <div class="controls">
+                <button onclick="selectRandomSong()">🎲 Vælg tilfældig sang</button>
+                <button class="secondary" id="revealBtn" onclick="revealAnswer()" style="display: none;">👁️ Vis svar</button>
+            </div>
+            
+            <div class="card">
+                <div id="selectedTrack">
+                    <h3>Klar til quiz?</h3>
+                    <p style="color: var(--gray); margin-top: 10px;">Tryk på knappen for at generere en QR-kode</p>
                 </div>
+                <div id="qrcode"></div>
                 
-                <div class="card">
-                    <div class="qr-display">
-                        <div id="selectedTrack" class="placeholder">
-                            <h3>Klar til quiz?</h3>
-                            <p>Tryk på knappen for at vælge en tilfældig sang fra listen</p>
-                            <div class="stats">
-                                <div class="stat-item">
-                                    <div class="stat-number" id="totalSongs">0</div>
-                                    <div class="stat-label">Sange i quiz</div>
-                                </div>
-                                <div class="stat-item">
-                                    <div class="stat-number" id="usedSongs">0</div>
-                                    <div class="stat-label">Brugt i denne runde</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="qrcode"></div>
-                    </div>
-                </div>
-                
-                <div class="info-box">
-                    <strong>💡 Sådan fungerer det:</strong>
-                    <ul>
-                        <li>Tryk på "Vælg tilfældig sang" for at generere en QR kode</li>
-                        <li>Scan QR koden med din mobil</li>
-                        <li>Sangen afspilles automatisk på mobilen</li>
-                        <li>Gæt hvilket år sangen er fra!</li>
-                        <li>Tryk "Vis svar" for at se det rigtige årstal</li>
-                    </ul>
+                <div style="margin-top: 30px; color: var(--gray); font-size: 0.9rem;">
+                    Brugt: <span id="usedSongs">0</span> / <span id="totalSongs">0</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Mobile Player View -->
     <div class="mobile-player" id="mobilePlayer">
         <div class="player-card">
-            <div class="equalizer">
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-            </div>
+            <h2 style="font-family: 'Krona One'; color: var(--primary); margin-bottom: 10px;">MUSIKQUIZ</h2>
+            <p>Lyt til sangen herunder:</p>
             
-            <h2 class="player-title">Musikquiz</h2>
-            <p class="player-message">🎵 Sangen afspilles nu...</p>
-            <p class="player-instructions">Lyt godt efter og gæt hvilket år sangen er fra!</p>
+            <div id="spotifyEmbed" class="spotify-container">
+                </div>
             
-            <div class="guess-prompt">
-                <h3>🤔 Din opgave:</h3>
-                <p>Hvilket årstal tror du denne sang er fra?</p>
+            <div style="background: rgba(255,0,110,0.1); padding: 20px; border-radius: 16px; border: 2px solid var(--accent);">
+                <h3 style="color: var(--accent); font-family: 'Krona One'; font-size: 1.1rem; margin-bottom: 10px;">DIN OPGAVE:</h3>
+                <p>Hvilket årstal udkom denne sang? <br>Giv dit bud til quiz-masteren!</p>
             </div>
         </div>
     </div>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
-        // TILPAS DENNE LISTE MED DINE EGNE SANGE
-        // Find Spotify URIs ved at højreklikke på en sang i Spotify > Del > Kopier Spotify URI
         const quizSongs = [
-            {
-                name: "Billie Jean",
-                artist: "Michael Jackson",
-                year: 1983,
-                spotifyUri: "spotify:track:5ChkMS8OtdzJeqyybCc9R5"
-            },
-            {
-                name: "Bohemian Rhapsody",
-                artist: "Queen",
-                year: 1975,
-                spotifyUri: "spotify:track:4u7EnebtmKWzUH433cf5Qv"
-            },
-            {
-                name: "Smells Like Teen Spirit",
-                artist: "Nirvana",
-                year: 1991,
-                spotifyUri: "spotify:track:4CeeEOM32jQcH3eN9Q2dGj"
-            },
-            {
-                name: "Rolling in the Deep",
-                artist: "Adele",
-                year: 2010,
-                spotifyUri: "spotify:track:4OSBTYWVwsQhGLF9NHvIbR"
-            },
-            {
-                name: "Hey Jude",
-                artist: "The Beatles",
-                year: 1968,
-                spotifyUri: "spotify:track:0aym2LBJBk9DAYuHHutrIl"
-            },
-            {
-                name: "Sweet Child O' Mine",
-                artist: "Guns N' Roses",
-                year: 1987,
-                spotifyUri: "spotify:track:7o2CTH4ctstm8TNelqjb51"
-            },
-            {
-                name: "Wonderwall",
-                artist: "Oasis",
-                year: 1995,
-                spotifyUri: "spotify:track:5qqabIl2vWzo9ApSC317sa"
-            },
-            {
-                name: "Shape of You",
-                artist: "Ed Sheeran",
-                year: 2017,
-                spotifyUri: "spotify:track:7qiZfU4dY1lWllzX7mPBI"
-            },
-            {
-                name: "I Will Always Love You",
-                artist: "Whitney Houston",
-                year: 1992,
-                spotifyUri: "spotify:track:4eHbdreAnSOrDDsFfc4Fpm"
-            },
-            {
-                name: "Hotel California",
-                artist: "Eagles",
-                year: 1976,
-                spotifyUri: "spotify:track:40riOy7x9W7GXjyGp4pjAv"
-            }
+            { name: "Billie Jean", artist: "Michael Jackson", year: 1983, id: "5ChkMS8OtdzJeqyybCc9R5" },
+            { name: "Bohemian Rhapsody", artist: "Queen", year: 1975, id: "4u7EnebtmKWzUH433cf5Qv" },
+            { name: "Smells Like Teen Spirit", artist: "Nirvana", year: 1991, id: "4CeeEOM32jQcH3eN9Q2dGj" },
+            { name: "Rolling in the Deep", artist: "Adele", year: 2010, id: "4OSBTYWVwsQhGLF9NHvIbR" },
+            { name: "Hey Jude", artist: "The Beatles", year: 1968, id: "0aym2LBJBk9DAYuHHutrIl" },
+            { name: "Sweet Child O' Mine", artist: "Guns N' Roses", year: 1987, id: "7o2CTH4ctstm8TNelqjb51" },
+            { name: "Wonderwall", artist: "Oasis", year: 1995, id: "5qqabIl2vWzo9ApSC317sa" },
+            { name: "Shape of You", artist: "Ed Sheeran", year: 2017, id: "7qiZfU4dY1lWllzX7mPBI" },
+            { name: "I Will Always Love You", artist: "Whitney Houston", year: 1992, id: "4eHbdreAnSOrDDsFfc4Fpm" },
+            { name: "Hotel California", artist: "Eagles", year: 1976, id: "40riOy7x9W7GXjyGp4pjAv" }
         ];
-        
+
         let usedSongs = [];
         let currentSong = null;
-        let answerRevealed = false;
-        
-        // Initialize
-        document.getElementById('totalSongs').textContent = quizSongs.length;
-        updateUsedCount();
-        
-        function updateUsedCount() {
-            document.getElementById('usedSongs').textContent = usedSongs.length;
-        }
-        
-        function selectRandomSong() {
-            // Reset if all songs have been used
-            if (usedSongs.length >= quizSongs.length) {
-                if (confirm('Alle sange er blevet brugt! Vil du nulstille og starte forfra?')) {
-                    usedSongs = [];
-                    updateUsedCount();
-                } else {
-                    return;
-                }
+
+        // Tjek ved opstart om vi er på mobil (har ?track= i URL)
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const trackId = urlParams.get('track');
+
+            if (trackId) {
+                // VI ER PÅ MOBIL
+                showMobilePlayer(trackId);
+            } else {
+                // VI ER PÅ COMPUTER
+                document.getElementById('totalSongs').textContent = quizSongs.length;
             }
+        };
+
+        function selectRandomSong() {
+            const available = quizSongs.filter(s => !usedSongs.includes(s.id));
             
-            // Find unused songs
-            const availableSongs = quizSongs.filter(song => 
-                !usedSongs.includes(song.spotifyUri)
-            );
+            if (available.length === 0) {
+                if(confirm("Alle sange er brugt! Vil du starte forfra?")) {
+                    usedSongs = [];
+                    document.getElementById('usedSongs').textContent = "0";
+                }
+                return;
+            }
+
+            currentSong = available[Math.floor(Math.random() * available.length)];
+            usedSongs.push(currentSong.id);
             
-            // Select random song
-            const randomIndex = Math.floor(Math.random() * availableSongs.length);
-            currentSong = availableSongs[randomIndex];
-            
-            // Mark as used
-            usedSongs.push(currentSong.spotifyUri);
-            updateUsedCount();
-            
-            // Reset answer reveal
-            answerRevealed = false;
-            
-            // Display selected track (without year initially)
-            displayTrack(false);
-            
-            // Generate QR code
-            generateQRCode();
-            
-            // Show reveal button
-            document.getElementById('revealBtn').style.display = 'inline-block';
-        }
-        
-        function displayTrack(showYear) {
-            const trackDiv = document.getElementById('selectedTrack');
-            trackDiv.className = 'selected-track show';
-            
-            trackDiv.innerHTML = `
-                <h3>${currentSong.name}</h3>
-                <div class="artist">${currentSong.artist}</div>
-                ${showYear ? `<span class="year-badge">🎯 ${currentSong.year}</span>` : '<span class="year-badge">❓ ???</span>'}
+            document.getElementById('usedSongs').textContent = usedSongs.length;
+            document.getElementById('selectedTrack').innerHTML = `
+                <h3 style="color: var(--primary)">Sangen er klar!</h3>
+                <p>Scan koden med mobilen for at høre den.</p>
             `;
+            document.getElementById('revealBtn').style.display = 'inline-block';
+            
+            generateQR(currentSong.id);
         }
-        
-        function generateQRCode() {
+
+        function generateQR(id) {
             const qrcodeDiv = document.getElementById('qrcode');
-            qrcodeDiv.className = 'show';
-            qrcodeDiv.innerHTML = '';
+            qrcodeDiv.innerHTML = ''; // Rens tidligere kode
             
-            // Use direct Spotify URI for QR code
-            const playUrl = currentSong.spotifyUri;
+            // Linket som mobilen skal åbne (denne sides egen URL + track id)
+            const playUrl = window.location.origin + window.location.pathname + "?track=" + id;
             
-            // Generate QR code using QRCode.js
             new QRCode(qrcodeDiv, {
                 text: playUrl,
-                width: 300,
-                height: 300,
+                width: 250,
+                height: 250,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.H
             });
         }
-        
+
         function revealAnswer() {
-            if (!currentSong || answerRevealed) return;
-            
-            answerRevealed = true;
-            displayTrack(true);
-            
-            // Animate the reveal
-            const yearBadge = document.querySelector('.year-badge');
-            if (yearBadge) {
-                yearBadge.style.animation = 'zoomIn 0.5s ease-out';
-            }
+            if (!currentSong) return;
+            document.getElementById('selectedTrack').innerHTML = `
+                <h2 style="font-family: 'Krona One'; color: var(--primary);">${currentSong.name}</h2>
+                <p style="font-size: 1.2rem;">${currentSong.artist}</p>
+                <div class="year-badge">🎯 Årstal: ${currentSong.year}</div>
+            `;
         }
-        
-        // No need for mobile player - QR code opens Spotify directly
+
+        function showMobilePlayer(id) {
+            // Skjul desktop og vis mobil
+            document.getElementById('desktopView').style.display = 'none';
+            document.getElementById('mobilePlayer').classList.add('active');
+            
+            // Indsæt Spotify afspilleren
+            document.getElementById('spotifyEmbed').innerHTML = `
+                <iframe src="https://open.spotify.com/embed/track/${id}" 
+                    width="100%" height="152" frameBorder="0" 
+                    allowtransparency="true" allow="encrypted-media"></iframe>
+            `;
+        }
     </script>
 </body>
 </html>
