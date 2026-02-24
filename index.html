@@ -1,282 +1,491 @@
-<!DOCTYPE html>
-<html lang="da">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Musikquiz - Gæt Årstallet</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Krona+One&family=DM+Sans:wght@400;500;700&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        :root {
-            --primary: #1DB954;
-            --dark: #121212;
-            --darker: #0A0A0A;
-            --light: #FFFFFF;
-            --gray: #535353;
-            --accent: #FF006E;
-        }
-        
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 50%, #1a1a1a 100%);
-            color: var(--light);
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-        }
-        
-        body::before {
-            content: '';
-            position: fixed;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(29, 185, 84, 0.1) 0%, transparent 70%);
-            animation: pulse 8s ease-in-out infinite;
-            pointer-events: none;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.1); }
-        }
-        
-        .desktop-view { padding: 2rem; display: block; }
-        .container { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
-        
-        header { text-align: center; margin-bottom: 3rem; }
-        h1 {
-            font-family: 'Krona One', sans-serif;
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 2.5rem;
-            backdrop-filter: blur(10px);
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-        
-        .controls { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
-        
-        button {
-            padding: 1.25rem 2.5rem;
-            background: linear-gradient(135deg, var(--primary) 0%, #1ed760 100%);
-            border: none;
-            border-radius: 12px;
-            color: var(--dark);
-            font-weight: 700;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        button.secondary { background: rgba(255, 255, 255, 0.1); color: var(--light); }
-        
-        #qrcode {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 20px;
-            display: inline-block;
-            margin-top: 20px;
-        }
-
-        .year-badge {
-            display: inline-block;
-            background: var(--accent);
-            padding: 0.5rem 1.5rem;
-            border-radius: 25px;
-            font-weight: bold;
-            margin-top: 15px;
-        }
-
-        /* Mobile Player View */
-        .mobile-player {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .mobile-player.active { display: flex; }
-
-        .player-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid var(--primary);
-            border-radius: 24px;
-            padding: 2rem;
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .spotify-container {
-            margin: 2rem 0;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #000;
-            min-height: 152px;
-        }
-
-        @media (max-width: 768px) {
-            .controls { flex-direction: column; }
-            button { width: 100%; }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="desktop-view" id="desktopView">
-        <div class="container">
-            <header>
-                <h1>🎵 Musikquiz</h1>
-                <p style="color: var(--gray);">Gæt årstallet på sangen</p>
-            </header>
-            
-            <div class="controls">
-                <button onclick="selectRandomSong()">🎲 Vælg tilfældig sang</button>
-                <button class="secondary" id="revealBtn" onclick="revealAnswer()" style="display: none;">👁️ Vis svar</button>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Quicksand:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="background">
+      <div class="top-box">
+        <header>
+          <div class="name-img">
+            <img
+              src="/Gemini_Generated_Image_rytovrytovrytovr.png"
+              alt=""
+              id="profil-img"
+            />
+            <input type="text" value="Haru" />
+          </div>
+          <div class="info">
+            <div class="">
+              <p>Level</p>
+              <input
+                type="number"
+                name=""
+                id="level"
+                value="1"
+                min="1"
+                max="20"
+              />
             </div>
-            
-            <div class="card">
-                <div id="selectedTrack">
-                    <h3>Klar til quiz?</h3>
-                    <p style="color: var(--gray); margin-top: 10px;">Tryk på knappen for at generere en QR-kode</p>
-                </div>
-                <div id="qrcode"></div>
-                
-                <div style="margin-top: 30px; color: var(--gray); font-size: 0.9rem;">
-                    Brugt: <span id="usedSongs">0</span> / <span id="totalSongs">0</span>
-                </div>
+            <div class="more-info">
+              <p>Class: Monk (Way of the Open Hand)</p>
             </div>
-        </div>
+            <div class="more-info">
+              <p>Background: Acolyte (Lawful Good)</p>
+            </div>
+            <div class="more-info">
+              <p>Age: <input type="text" value="26" /></p>
+            </div>
+            <div class="more-info">
+              <p>Race: Human</p>
+            </div>
+          </div>
+        </header>
+
+        <section class="ability-box">
+          <!--Ability start-->
+
+          <div class="inner-ability-box">
+            <div>
+              <p>Abilities and Saves</p>
+            </div>
+            <div class="inside-inner-ability-box">
+              <div class="stat-box">
+                <label for="" id="STR"></label>
+                <input
+                  type="number"
+                  id="ability-mod-STR-input"
+                  value="10"
+                  min="0"
+                  s
+                  max="30"
+                />
+                <div class="">
+                  <p id="ability-mod-STR">0</p>
+                  <p id="STR-save">Saves: <span id="addpro-STR">0</span></p>
+
+                  <input type="checkbox" name="" id="STR-pro" />
+                </div>
+              </div>
+              <div class="stat-box">
+                <label for="" id="DEX"></label>
+                <input
+                  type="number"
+                  id="ability-mod-DEX-input"
+                  value="10"
+                  min="0"
+                  max="30"
+                />
+                <div class="">
+                  <p id="ability-mod-DEX">0</p>
+                  <p id="DEX-save">Saves: <span id="addpro-DEX">0</span></p>
+                  <input type="checkbox" name="" id="DEX-pro" />
+                </div>
+              </div>
+              <div class="stat-box">
+                <label for="" id="CON">STR</label>
+                <input
+                  type="number"
+                  id="ability-mod-CON-input"
+                  value="10"
+                  min="0"
+                  max="30"
+                />
+                <div class="">
+                  <p id="ability-mod-CON">0</p>
+                  <p id="CON-save">Saves: <span id="addpro-CON">0</span></p>
+                  <input type="checkbox" name="" id="CON-pro" />
+                </div>
+              </div>
+              <div class="stat-box">
+                <label for="" id="INT">STR</label>
+                <input
+                  type="number"
+                  id="ability-mod-INT-input"
+                  value="10"
+                  max="30"
+                  min="0"
+                />
+                <div class="">
+                  <p id="ability-mod-INT">0</p>
+                  <p id="INT-save">Saves: <span id="addpro-INT"></span></p>
+                  <input type="checkbox" name="" id="INT-pro" />
+                </div>
+              </div>
+              <div class="stat-box">
+                <label for="" id="WIS">STR</label>
+                <input
+                  type="number"
+                  id="ability-mod-WIS-input"
+                  value="10"
+                  min="0"
+                  max="30"
+                />
+                <div class="">
+                  <p id="ability-mod-WIS">0</p>
+                  <p id="WIS-save">Saves: <span id="addpro-WIS">0</span></p>
+                  <input type="checkbox" name="" id="WIS-pro" />
+                </div>
+              </div>
+              <div class="stat-box">
+                <label for="" id="CHA">STR</label>
+                <input
+                  type="number"
+                  id="ability-mod-CHA-input"
+                  value="10"
+                  min="0"
+                  max="30"
+                />
+                <div class="">
+                  <p id="ability-mod-CHA">0</p>
+                  <p id="CHA-save">Saves: <span id="addpro-CHA"></span></p>
+                  <input type="checkbox" name="" id="CHA-pro" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Stats -->
+          <div class="proficiency-bonus">
+            <p>Proficiency:</p>
+            <p id="proficiency-bonusid">2</p>
+            <p>Initiative:</p>
+            <p id="ininitiativ">0</p>
+          </div>
+        </section>
+      </div>
+      <!--Ability slut-->
+      <!-- Her starter the rest-->
+      <main class="the-rest">
+        <!-- Skills -->
+        <section class="all-skills">
+          <h3>All Skills</h3>
+          <div class="skill-row">
+            <p id="skill-Acrobatics"></p>
+            <p id="skill-ability-Acrobatics"></p>
+            <p id="Acrobatics">0</p>
+
+            <input type="checkbox" name="" id="skill-Acrobatics-pro" />
+          </div>
+          <div class="skill-row">
+            <p id="skill-Animal Handling"></p>
+            <p id="skill-ability-Animal Handling"></p>
+            <p id="Animal Handling">0</p>
+
+            <input type="checkbox" name="" id="skill-Animal Handling-pro" />
+          </div>
+
+          <div class="skill-row">
+            <p id="skill-Arcana"></p>
+            <p id="skill-ability-Arcana"></p>
+            <p id="Arcana">0</p>
+
+            <input type="checkbox" name="" id="skill-Arcana-pro" />
+          </div>
+          <div class="skill-row">
+            <p id="skill-Athletics"></p>
+            <p id="skill-ability-Athletics"></p>
+            <p id="Athletics">0</p>
+
+            <input type="checkbox" name="" id="skill-Athletics-pro" />
+          </div>
+          <div class="skill-row">
+            <p id="skill-Deception"></p>
+            <p id="skill-ability-Deception"></p>
+            <p id="Deception">0</p>
+
+            <input type="checkbox" name="" id="skill-Deception-pro" />
+            <p id=""></p>
+          </div>
+          <div class="skill-row">
+            <p id="skill-History"></p>
+            <p id="skill-ability-History"></p>
+            <div class=""></div>
+            <p id="History">0</p>
+
+            <input type="checkbox" name="" id="skill-History-pro" />
+            <div class=""></div>
+          </div>
+          <div class="skill-row">
+            <p id="skill-Insight"></p>
+            <p id="skill-ability-Insight"></p>
+            <p id="Insight">0</p>
+
+            <input type="checkbox" name="" id="skill-Insight-pro" />
+          </div>
+          <div class="skill-row">
+            <p id="skill-Intimidation"></p>
+            <p id="skill-ability-Intimidation"></p>
+            <p id="Intimidation">0</p>
+
+            <input type="checkbox" name="" id="skill-Intimidation-pro" />
+          </div>
+          <div class="skill-row">
+            <p id="skill-Investigation"></p>
+            <p id="skill-ability-Investigation"></p>
+            <p id="Investigation">0</p>
+
+            <input type="checkbox" name="" id="skill-Investigation-pro" />
+          </div>
+          <div class="skill-row">
+            <p id="skill-Medicine"></p>
+            <p id="skill-ability-Medicine"></p>
+            <p id="Medicine">0</p>
+
+            <input type="checkbox" name="" id="skill-Medicine-pro" />
+          </div>
+          <div class="skill-row">
+            <p id="skill-Nature"></p>
+            <p id="skill-ability-Nature"></p>
+            <p id="Nature">0</p>
+
+            <input type="checkbox" name="" id="skill-Nature-pro" />
+          </div>
+          <div class="skill-row">
+            <p id="skill-Perception"></p>
+            <p id="skill-ability-Perception"></p>
+            <p id="Perception">0</p>
+
+            <input type="checkbox" name="" id="skill-Perception-pro" />
+          </div>
+          <div class="skill-row">
+            <p id="skill-Performance"></p>
+            <p id="skill-ability-Performance"></p>
+            <p id="Performance">0</p>
+
+            <input type="checkbox" name="" id="skill-Performance-pro" />
+          </div>
+          <div class="skill-row">
+            <p id="skill-Persuasion"></p>
+            <p id="skill-ability-Persuasion"></p>
+            <p id="Persuasion">0</p>
+
+            <input type="checkbox" name="" id="skill-Persuasion-pro" />
+          </div>
+          <div class="skill-row">
+            <p id="skill-Religion"></p>
+            <p id="skill-ability-Religion"></p>
+            <p id="Religion">0</p>
+
+            <input type="checkbox" name="" id="skill-Religion-pro" />
+          </div>
+          <div class="skill-row">
+            <p id="skill-Sleight of Hand"></p>
+            <p id="skill-ability-Sleight of Hand"></p>
+            <p id="Sleight of Hand">0</p>
+
+            <input type="checkbox" name="" id="skill-Sleight of Hand-pro" />
+          </div>
+          <div class="skill-row">
+            <p id="skill-Stealth"></p>
+            <p id="skill-ability-Stealth"></p>
+            <p id="Stealth">0</p>
+
+            <input type="checkbox" name="" id="skill-Stealth-pro" />
+          </div>
+          <div class="skill-row">
+            <p id="skill-Survival"></p>
+            <p id="skill-ability-Survival"></p>
+            <p id="Survival">0</p>
+
+            <input type="checkbox" name="" id="skill-Survival-pro" />
+          </div>
+
+          <h3>Languages & Proficiencies</h3>
+          <div class="info-section"></div>
+          <div class="info-section"></div>
+        </section>
+        <!-- Combat -->
+        <section class="combat-section">
+          <h3>Combat</h3>
+          <p id="armor-class">Armor Class</p>
+          <input type="number" name="a-c-test" id="a-c-test" />
+          <p id="attack-bonus">Attack Bonus: Attack:</p>
+          <p id="ki-dc-save">Ki Save DC: 10</p>
+          <h3>Hit pionts</h3>
+          <div class="">
+            <div class=""><p>Current/max</p></div>
+            <div class="">
+              <input type="number" id="Current-hit-points" value="8" />
+            </div>
+            <div class="">
+              <p id="max-hit-points">/8</p>
+            </div>
+          </div>
+          <div class="">
+            <div class=""></div>
+            <div class=""></div>
+          </div>
+          <h3>Death Saves</h3>
+          <div class="">
+            <label for="">Leve</label>
+            <div class="">
+              <input type="checkbox" name="" id="" />
+              <input type="checkbox" name="" id="" />
+              <input type="checkbox" name="" id="" />
+            </div>
+          </div>
+          <div class="">
+            <label for="">DØD</label>
+            <div class="">
+              <input type="checkbox" name="" id="" />
+              <input type="checkbox" name="" id="" />
+              <input type="checkbox" name="" id="" />
+            </div>
+          </div>
+          <h3>Ki pionts</h3>
+          <div class="">
+            <p>Current ki-points</p>
+            <input type="number" />
+            <p id="ki-points">Max Ki-points: 0</p>
+            <button>Short Rest</button>
+          </div>
+        </section>
+        <!-- Actions -->
+        <section class="monk-actions">
+          <h3>Monk Actions</h3>
+          <div class="">
+            <div class="action-items">
+              <p id="action-items"></p>
+            </div>
+          </div>
+          <h3>Monk Features</h3>
+          <div class="">
+            <div class="features-items">
+              <p id="features-items"></p>
+            </div>
+            <button>Long Rest</button>
+          </div>
+          <h3>Special Features</h3>
+          <div class="">
+            <h4></h4>
+            <p></p>
+            <div class=""></div>
+            <div class=""></div>
+            <div class=""></div>
+            <div class=""></div>
+          </div>
+          <div class="">
+            <h4>🌙 Dristige Lanns Snilde (Long Rest)</h4>
+            <p></p>
+            <div class=""></div>
+            <div class=""></div>
+            <div class=""></div>
+            <div class=""></div>
+          </div>
+        </section>
+        <section class="inspiration-box">
+          <div class="stat-box">
+            <p>Movment</p>
+            <h3 id="movment">30 feet</h3>
+            <label for="">Inspiration</label>
+            <input type="checkbox" />
+            <label for="">Exhaustion</label>
+            <input type="number" max="3" placeholder="0" />
+            <div class="pasiv-stats">
+              <p id="passive-percetion">Passive Percetion: 0</p>
+
+              <p id="passive-insight">Passive Insight: 0</p>
+            </div>
+          </div>
+        </section>
+        <!-- GOld - Conditions - Inventory - Combat-Tool - DiceRoller -->
+        <section class="inventory-and-more">
+          <div class=""><h3>Combat Tool</h3></div>
+          <div class=""><h3>Dice Roller</h3></div>
+          <div class=""><h3>Conditions</h3></div>
+          <div class=""><h3>Gold</h3></div>
+          <div class="">
+            <h3>Inventory</h3>
+            <textarea name="" id="inventory-input"></textarea>
+          </div>
+          <div class="">
+            <h3>Personality Traits</h3>
+            <textarea name="" id="personality-input"></textarea>
+          </div>
+          <div class="">
+            <h3>Notes</h3>
+            <textarea name="" id="notes-input"></textarea>
+          </div>
+        </section>
+      </main>
     </div>
 
-    <div class="mobile-player" id="mobilePlayer">
-        <div class="player-card">
-            <h2 style="font-family: 'Krona One'; color: var(--primary); margin-bottom: 10px;">MUSIKQUIZ</h2>
-            <p>Lyt til sangen herunder:</p>
-            
-            <div id="spotifyEmbed" class="spotify-container">
-                </div>
-            
-            <div style="background: rgba(255,0,110,0.1); padding: 20px; border-radius: 16px; border: 2px solid var(--accent);">
-                <h3 style="color: var(--accent); font-family: 'Krona One'; font-size: 1.1rem; margin-bottom: 10px;">DIN OPGAVE:</h3>
-                <p>Hvilket årstal udkom denne sang? <br>Giv dit bud til quiz-masteren!</p>
-            </div>
-        </div>
+    <!--
+    <div class="dice-container">
+      <h2>D&D Dice Roller</h2>
+
+      <div class="input-group">
+        <label
+          style="
+            color: #aaa;
+            font-size: 12px;
+            display: block;
+            margin-bottom: 5px;
+          "
+          >ANTAL TERNINGER</label
+        >
+        <input type="number" id="diceCount" value="1" min="1" max="50" />
+      </div>
+
+      <div class="buttons">
+        <button onclick="rollDice(4)">d4</button>
+        <button onclick="rollDice(6)">d6</button>
+        <button onclick="rollDice(8)">d8</button>
+        <button onclick="rollDice(10)">d10</button>
+        <button onclick="rollDice(12)">d12</button>
+        <button onclick="rollDice(20)">d20</button>
+      </div>
+
+      <div id="result-details"></div>
+
+      <div id="total-result">Total: 0</div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
-        const quizSongs = [
-            { name: "Billie Jean", artist: "Michael Jackson", year: 1983, id: "5ChkMS8OtdzJeqyybCc9R5" },
-            { name: "Bohemian Rhapsody", artist: "Queen", year: 1975, id: "4u7EnebtmKWzUH433cf5Qv" },
-            { name: "Smells Like Teen Spirit", artist: "Nirvana", year: 1991, id: "4CeeEOM32jQcH3eN9Q2dGj" },
-            { name: "Rolling in the Deep", artist: "Adele", year: 2010, id: "4OSBTYWVwsQhGLF9NHvIbR" },
-            { name: "Hey Jude", artist: "The Beatles", year: 1968, id: "0aym2LBJBk9DAYuHHutrIl" },
-            { name: "Sweet Child O' Mine", artist: "Guns N' Roses", year: 1987, id: "7o2CTH4ctstm8TNelqjb51" },
-            { name: "Wonderwall", artist: "Oasis", year: 1995, id: "5qqabIl2vWzo9ApSC317sa" },
-            { name: "Shape of You", artist: "Ed Sheeran", year: 2017, id: "7qiZfU4dY1lWllzX7mPBI" },
-            { name: "I Will Always Love You", artist: "Whitney Houston", year: 1992, id: "4eHbdreAnSOrDDsFfc4Fpm" },
-            { name: "Hotel California", artist: "Eagles", year: 1976, id: "40riOy7x9W7GXjyGp4pjAv" }
-        ];
+      function rollDice(sides) {
+        const count = document.getElementById("diceCount").value;
+        const resultArea = document.getElementById("result-details");
+        const totalDisplay = document.getElementById("total-result");
 
-        let usedSongs = [];
-        let currentSong = null;
+        let rolls = [];
+        let total = 0;
 
-        // Tjek ved opstart om vi er på mobil (har ?track= i URL)
-        window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const trackId = urlParams.get('track');
-
-            if (trackId) {
-                // VI ER PÅ MOBIL
-                showMobilePlayer(trackId);
-            } else {
-                // VI ER PÅ COMPUTER
-                document.getElementById('totalSongs').textContent = quizSongs.length;
-            }
-        };
-
-        function selectRandomSong() {
-            const available = quizSongs.filter(s => !usedSongs.includes(s.id));
-            
-            if (available.length === 0) {
-                if(confirm("Alle sange er brugt! Vil du starte forfra?")) {
-                    usedSongs = [];
-                    document.getElementById('usedSongs').textContent = "0";
-                }
-                return;
-            }
-
-            currentSong = available[Math.floor(Math.random() * available.length)];
-            usedSongs.push(currentSong.id);
-            
-            document.getElementById('usedSongs').textContent = usedSongs.length;
-            document.getElementById('selectedTrack').innerHTML = `
-                <h3 style="color: var(--primary)">Sangen er klar!</h3>
-                <p>Scan koden med mobilen for at høre den.</p>
-            `;
-            document.getElementById('revealBtn').style.display = 'inline-block';
-            
-            generateQR(currentSong.id);
+        for (let i = 0; i < count; i++) {
+          const roll = Math.floor(Math.random() * sides) + 1;
+          rolls.push(roll);
+          total += roll;
         }
 
-        function generateQR(id) {
-            const qrcodeDiv = document.getElementById('qrcode');
-            qrcodeDiv.innerHTML = ''; // Rens tidligere kode
-            
-            // Linket som mobilen skal åbne (denne sides egen URL + track id)
-            const playUrl = window.location.origin + window.location.pathname + "?track=" + id;
-            
-            new QRCode(qrcodeDiv, {
-                text: playUrl,
-                width: 250,
-                height: 250,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
-            });
-        }
+        // Ryd gamle terninger
+        resultArea.innerHTML = "";
 
-        function revealAnswer() {
-            if (!currentSong) return;
-            document.getElementById('selectedTrack').innerHTML = `
-                <h2 style="font-family: 'Krona One'; color: var(--primary);">${currentSong.name}</h2>
-                <p style="font-size: 1.2rem;">${currentSong.artist}</p>
-                <div class="year-badge">🎯 Årstal: ${currentSong.year}</div>
-            `;
-        }
+        // Indsæt nye terninger med kast-animation
+        rolls.forEach((val, index) => {
+          setTimeout(() => {
+            const die = document.createElement("div");
+            die.className = "single-die";
+            die.innerText = val;
+            resultArea.appendChild(die);
+          }, index * 30); // Lille forsinkelse pr. terning for cool effekt
+        });
 
-        function showMobilePlayer(id) {
-            // Skjul desktop og vis mobil
-            document.getElementById('desktopView').style.display = 'none';
-            document.getElementById('mobilePlayer').classList.add('active');
-            
-            // Indsæt Spotify afspilleren
-            document.getElementById('spotifyEmbed').innerHTML = `
-                <iframe src="https://open.spotify.com/embed/track/${id}" 
-                    width="100%" height="152" frameBorder="0" 
-                    allowtransparency="true" allow="encrypted-media"></iframe>
-            `;
-        }
+        // Opdater totalen med "Pop" effekten (den gamle måde)
+        totalDisplay.innerText = "Total: " + total;
+        totalDisplay.style.transform = "scale(1.2)";
+
+        setTimeout(() => {
+          totalDisplay.style.transform = "scale(1)";
+        }, 100);
+      }
     </script>
-</body>
+    -->
+    <script type="module" src="main.js"></script>
+  </body>
 </html>
